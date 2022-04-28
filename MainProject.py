@@ -1,19 +1,16 @@
-from asyncore import loop
 from re import S
-from secrets import choice
-from statistics import median
 import pandas as pd 
 import numpy
 import statistics
-
+import random
+import sys
 df = pd.read_csv("foodkakkak.csv")
 df.dropna(inplace = True)
-checkUser = 0
 def findChoice(compareTime,CurTemp) :
     # LIST D0=Row, D1=Name_TH, D2=RATE, D3=Temperature, D4=Kind
     list = [[],[],[],[],[]]
     # LIST USEFUL FOOD PASS >> JUNK & USEFUL
-    # D0=Temperature, D1=RATE, D2=KIND 
+    # D0=ONLY_Date_Passed, D1=TEMP_Passed, D2=TEMP_RATE_Passed , D3=ALL_PASSED
     foruse = [[],[],[],[]]
     #PART CHECK TIME
     #NO JUNK REUSE FOR TIME CHECK
@@ -61,35 +58,87 @@ def runFromUserChoose(time,CurrentTemp,userSelected):
     elif "PM" in str(time) :
         Choice = findChoice("PM",CurrentTemp)
     if userSelected == 1 :
-        if Choice[0] ==
-    return Choice
+        if Choice[3] != [] :
+            r = random.choice(Choice[3])
+            return r
+        else :
+            r = "null"
+            return r
+    elif userSelected == 2 :
+        if Choice[2] != [] :
+            r = random.choice(Choice[2])
+            return r
+        else :
+            r = "null"
+            return r
+    elif userSelected == 3 :
+        if Choice[1] != [] :
+            r = random.choice(Choice[1])
+            return r
+        else :
+            r = "null"
+            return r
+    elif userSelected == 4 :
+        if Choice[0] != [] :
+            r = random.choice(Choice[0])
+            return r
+        else :
+            r = "null"
+            return r
 
-askWant = str(input("Do you want something? : "))
+askWant = str(input("Do you want something? [YES/NO] : "))
 if askWant.casefold() == "yes" :
-    print("OK Input Next!")
-    print("<Now enter your current time>")
-    print("use this format!", "24 hours time format!")
-    print("01:00AM")
+    print("-----------------------------------------------\nOK Next!\n-----------------------------------------------")
+    print("<Now enter your current time>\nFormt Example!\n01:00AM")
+    print("-----------------------------------------------")
     askTime = str(input("Current Time : "))
-
-    print("<Now enter your current temperature>")
-    print("use this format!", "Celcieus!")
-    print("35")
+    print("-----------------------------------------------")
+    print("<Now enter your current temperature>\nuse this format!", "Celcieus!\nExample 35 >> means 35 degree celcieus!")
+    print("-----------------------------------------------")
     askTemp = int(input("Current Temperature : "))
-
-    print("<Now enter your current weather>")
-    print("use this format!", "SELECT from number")
+    print("-----------------------------------------------")
+    print("<Now enter your current weather>\nuse this format!", "SELECT from number")
     print("1 Clear =แจ่มใส\n2 Dry =แห้ง\n3 Sweltering =ร้อนระอุ\n4 Sunny =แดดจัด\n5 Frosty =หนาวจัด\n6 Cold =เย็น\n7 Stormy =มีพายุ\n8 Breezy =มีลมอ่อน\n9 Windy =ลมแรง\n10 Misty =มีหมอก\n11 Cloudy =มีเมฆมาก\n12 Rainy =ที่ฝนตก")
-    print("If your weather is Clear >> Type 1")
+    print("Example >> If your weather is Clear >> Type 1")
+    print("-----------------------------------------------")
     askWeather = int(input("Current Weather : "))
+    print("-----------------------------------------------\nOverview your info!\n-----------------------------------------------")
     print(askTime, askTemp, askWeather)
-
+    print("-----------------------------------------------")
     while True :
+        print("-----------------------------------------------\nOrder Me!\n-----------------------------------------------")
         print("USE This Format! for Select match passed choices!")
-        print("1 = Temperature, RATE and Kind PASSED\n2 = Tempertature and RATE PASSED \n3= Temperature PASSED")
+        print("1 = Temperature, RATE and Kind PASSED\n2 = Tempertature and RATE PASSED \n3= Temperature PASSED\n4=Time PASSED\n5=EXIT")
+        print("-----------------------------------------------")
         askFood = int(input("SELECT FOOD : "))
-        if askFood < 4 and askFood > 0 :
-            if runFromUserChoose(askTime,askTemp,askFood) 
-            
+        print("-----------------------------------------------\nGet it!\n-----------------------------------------------")
+        if askFood < 5 and askFood > 0 :
+            cRow = runFromUserChoose(askTime,askTemp,askFood)
+            if cRow != "null" :
+                print(cRow)
+                Answer = "ชื่อภาษาไทย : {0}\nName : {1}\nKind : {2}\nRate : {3}\nReview : {4}\nMood : {5}\nDate & Time : {6}\nWeather : {7}\nTemperature : {8}"
+                print(Answer.format(df.loc[cRow][1],df.loc[cRow][2],df.loc[cRow][3],df.loc[cRow][4],df.loc[cRow][5],df.loc[cRow][6],df.loc[cRow][7],df.loc[cRow][8],df.loc[cRow][9]))
+                print("-----------------------------------------------")
+                askLike = str(input("Do you like it? [YES/NO] : "))
+                if askLike.casefold() == "yes" :
+                    print("-----------------------------------------------\nTHANKS\n-----------------------------------------------")
+                    break
+                elif askLike.casefold() == "no" :
+                    askTryAgain = str(input("Do you want to try again? [YES/NO] : "))
+                    if askTryAgain.casefold() == "yes" :
+                        print("TRY AGAIN!\n-----------------------------------------------")
+                        continue
+                    elif askTryAgain.casefold() == "no" :
+                        print("SORRY!")
+                        print("-----------------------------------------------\nTHANKS\n-----------------------------------------------")
+                        break
+        elif askFood == 5 :
+            print("-----------------------------------------------\nTHANKS\n-----------------------------------------------")
+            break
+        else :
+            print("ERROR : SELECT FOOD not vild! Try Again")
+            continue        
 else :
     print("Hope you come back! ;)")
+
+sys.exit
