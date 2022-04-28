@@ -1,7 +1,7 @@
 import pandas as pd 
 
 df = pd.read_csv("foodkakkak.csv")
-
+df.fillna(0, inplace = True)
 def mainAlgorithm():
     # Row Name Rate Temp
     list = [[],[],[],[]]
