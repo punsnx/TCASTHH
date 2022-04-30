@@ -1,4 +1,3 @@
-from re import S
 import pandas as pd 
 import numpy
 import statistics
@@ -132,6 +131,8 @@ if askWant.casefold() == "yes" :
                         print("SORRY!")
                         print("-----------------------------------------------\nTHANKS\n-----------------------------------------------")
                         break
+            else :
+                print("Data not available! TRY AGAIN!")
         elif askFood == 5 :
             print("-----------------------------------------------\nTHANKS\n-----------------------------------------------")
             break
