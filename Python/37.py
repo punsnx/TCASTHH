@@ -1,0 +1,28 @@
+import random 
+import sys
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+df = pd.read_csv("Medals.csv")
+pie = []
+labels = []
+others = []
+mycolors = []
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd','#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+for i in df.index :
+    if i < 9 :
+        labels.append(df.loc[i, "Team/NOC"])
+        pie.append(df.loc[i, "Gold"] + df.loc[i, "Silver"] + df.loc[i, "Bronze"])
+        mycolors.append(random.choice(colors))
+    elif i >= 9 :
+        others.append(df.loc[i, "Gold"] + df.loc[i, "Silver"] + df.loc[i, "Bronze"])
+
+labels.append("others")
+pie.append(sum(others))
+mycolors.append(random.choice(colors))
+
+plt.figure(figsize=(30, 10))
+plt.pie(pie, labels = labels, colors = mycolors, autopct='%1.1f%%')
+
+plt.show()
